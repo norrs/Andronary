@@ -28,4 +28,5 @@ public class Globals {
     public static final String SERVICE = "SERVICE";
     public static final String SUSERNAME = "SERVICEUSERNAME";
     public static final String SPASSWORD = "SERVICEPASSWORD";
+    public static final String FSEARCH = "FSEARCH";
 }

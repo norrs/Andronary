@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView.BufferType;
 import android.widget.Toast;
 import java.io.Serializable;
 import java.util.List;
@@ -55,11 +56,12 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     private ProgressDialog dialog = null;
     private DictLookupTask lookup = null;
     private DictListTask dictlist = null;
+    private String lastQuery = null;
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
 
@@ -70,6 +72,12 @@ public class MainActivity extends Activity implements OnClickListener, Directory
 
         lookup = new DictLookupTask(this);
         dictlist = new DictListTask(this);
+
+        lastQuery = (savedInstanceState == null) ? null : (String) savedInstanceState.getSerializable(Globals.FSEARCH);
+        if (lastQuery == null) {
+            Bundle extras = getIntent().getExtras();
+            lastQuery = extras != null ? extras.getString(Globals.FSEARCH) : null;
+        }
 
         updateDictionaryButton();
     }
@@ -150,6 +158,25 @@ public class MainActivity extends Activity implements OnClickListener, Directory
         dictlist = null;
         dialog.dismiss();
         showLanguageDialog(directories);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveState();
+        outState.putSerializable(Globals.FSEARCH, query.getText().toString());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadState();
     }
 
     /**
@@ -244,5 +271,14 @@ public class MainActivity extends Activity implements OnClickListener, Directory
         lookup = new DictLookupTask(this);
         lookup.execute(settings.getString(Globals.SERVICE, null), settings.getString(Globals.SUSERNAME, null), settings.getString(Globals.SPASSWORD, null), query, settings.getString(Globals.DICT, null));
 
+    }
+
+    private void saveState() {
+    }
+
+    private void loadState() {
+        if (lastQuery != null) {
+            query.setText(lastQuery);
+        }
     }
 }
