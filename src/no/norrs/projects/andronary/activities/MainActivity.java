@@ -18,6 +18,7 @@ package no.norrs.projects.andronary.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,8 +51,11 @@ import no.norrs.projects.andronary.tasks.DictLookupTask;
  */
 public class MainActivity extends Activity implements OnClickListener, DirectoryListener {
 
-    private static final int MENU_SETTINGS = 1;
-    private static final int MENU_ABOUT = 2;
+    private static final int MENU_SETTINGS = Menu.FIRST;
+    private static final int MENU_ABOUT = Menu.FIRST + 1;
+    private static final int DIALOG_SETTINGS = 0;
+    private static final int DIALOG_ABOUT = 1;
+    private static final int DIALOG_DICTIONARIES = 2;
     private EditText query = null;
     private ProgressDialog dialog = null;
     private DictLookupTask lookup = null;
@@ -112,10 +116,10 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case MENU_SETTINGS:
-                showSettingsDialog();
+                super.showDialog(DIALOG_SETTINGS);
                 return true;
             case MENU_ABOUT:
-                showAboutDialog();
+                super.showDialog(DIALOG_ABOUT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -157,7 +161,32 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     public void directoriesAvailable(String[] directories) {
         dictlist = null;
         dialog.dismiss();
-        showLanguageDialog(directories);
+        Bundle b = getIntent().getExtras();
+        b.putStringArray(Globals.FDICTIONARIES, directories);
+        super.showDialog(DIALOG_DICTIONARIES);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog d = null;
+
+        switch (id) {
+            case DIALOG_SETTINGS: {
+                d = showSettingsDialog();
+                break;
+            }
+            case DIALOG_ABOUT: {
+                d = showAboutDialog();
+                break;
+            }
+            case DIALOG_DICTIONARIES: {
+                String[] dicts = getIntent().getExtras().getStringArray(Globals.FDICTIONARIES);
+                d = showLanguageDialog(dicts);
+                break;
+            }
+
+        }
+        return d;
     }
 
     @Override
@@ -190,7 +219,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     /**
      * Creates a settings dialog.
      */
-    protected void showSettingsDialog() {
+    protected Dialog showSettingsDialog() {
         final SharedPreferences settings = getSharedPreferences(Globals.PREFS, 0);
         final SharedPreferences.Editor editor = settings.edit();
 
@@ -222,7 +251,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
         });
 
         builder.setNegativeButton("Cancel", null);
-        builder.show();
+        return builder.create();
 
 
     }
@@ -230,7 +259,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     /**
      * Creates a dialog for picking a dictionary
      */
-    protected void showLanguageDialog(final String directories[]) {
+    protected Dialog showLanguageDialog(final String directories[]) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a dictonary");
         builder.setItems(directories, new DialogInterface.OnClickListener() {
@@ -243,19 +272,15 @@ public class MainActivity extends Activity implements OnClickListener, Directory
                 updateDictionaryButton();
             }
         });
-        AlertDialog alert = builder.create();
-        alert.show();
 
-
-
+        return builder.create();
     }
 
-    protected void showAboutDialog() {
+    protected Dialog showAboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("About Andronary");
         builder.setMessage("By Roy Sindre Norangshol\nhttp://www.roysindre.no\n\nProject website:\n http://github.com/norrs/Andronary\nLicence:\n http://www.apache.org/licenses/LICENSE-2.0.html");
-        AlertDialog alert = builder.create();
-        alert.show();
+        return builder.create();
     }
 
     private void getDictionaries() {
