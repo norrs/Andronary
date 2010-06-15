@@ -181,7 +181,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
             }
             case DIALOG_DICTIONARIES: {
                 String[] dicts = getIntent().getExtras().getStringArray(Globals.FDICTIONARIES);
-                d = showLanguageDialog(dicts);
+                d = showDictionariesDialog(dicts);
                 break;
             }
 
@@ -259,7 +259,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     /**
      * Creates a dialog for picking a dictionary
      */
-    protected Dialog showLanguageDialog(final String directories[]) {
+    protected Dialog showDictionariesDialog(final String directories[]) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a dictonary");
         builder.setItems(directories, new DialogInterface.OnClickListener() {
