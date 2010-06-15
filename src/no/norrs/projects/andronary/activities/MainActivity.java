@@ -61,6 +61,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     private DictLookupTask lookup = null;
     private DictListTask dictlist = null;
     private String lastQuery = null;
+    private String[] dicts = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -161,8 +162,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     public void directoriesAvailable(String[] directories) {
         dictlist = null;
         dialog.dismiss();
-        Bundle b = getIntent().getExtras();
-        b.putStringArray(Globals.FDICTIONARIES, directories);
+        dicts = directories;
         super.showDialog(DIALOG_DICTIONARIES);
     }
 
@@ -180,7 +180,6 @@ public class MainActivity extends Activity implements OnClickListener, Directory
                 break;
             }
             case DIALOG_DICTIONARIES: {
-                String[] dicts = getIntent().getExtras().getStringArray(Globals.FDICTIONARIES);
                 d = showDictionariesDialog(dicts);
                 break;
             }
