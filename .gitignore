@@ -1,4 +1,8 @@
-nbproject/private
-build
-dist
-src/no/norrs/projects/andronary/R.java
+andronary-android/nbproject/private
+andronary-android/build
+andronary-android/dist
+andronary-android/src/no/norrs/projects/andronary/R.java
+andronary-services/nbproject/private
+andronary-services/*/nbproject/private
+andronary-services/*/target
+andronary-services/*/target/*
