@@ -31,12 +31,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView.BufferType;
 import android.widget.Toast;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import no.norrs.projects.andronary.DirectoryListener;
 import no.norrs.projects.andronary.Globals;
 import no.norrs.projects.andronary.R;
@@ -51,8 +55,10 @@ import no.norrs.projects.andronary.tasks.DictLookupTask;
  */
 public class MainActivity extends Activity implements OnClickListener, DirectoryListener {
 
+    // Menus
     private static final int MENU_SETTINGS = Menu.FIRST;
     private static final int MENU_ABOUT = Menu.FIRST + 1;
+    // Dialogs
     private static final int DIALOG_SETTINGS = 0;
     private static final int DIALOG_ABOUT = 1;
     private static final int DIALOG_DICTIONARIES = 2;
@@ -62,6 +68,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     private DictListTask dictlist = null;
     private String lastQuery = null;
     private String[] dicts = null;
+    private Queue<String> queue = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -78,13 +85,25 @@ public class MainActivity extends Activity implements OnClickListener, Directory
         lookup = new DictLookupTask(this);
         dictlist = new DictListTask(this);
 
-        lastQuery = (savedInstanceState == null) ? null : (String) savedInstanceState.getSerializable(Globals.FSEARCH);
-        if (lastQuery == null) {
-            Bundle extras = getIntent().getExtras();
-            lastQuery = extras != null ? extras.getString(Globals.FSEARCH) : null;
+        if (savedInstanceState != null) {
+            lastQuery = (String) savedInstanceState.getSerializable(Globals.FSEARCH);
+            queue = (Queue<String>) savedInstanceState.getSerializable(Globals.FSEARCHES);
+        }
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (lastQuery == null) {
+                lastQuery = extras.getString(Globals.FSEARCH);
+            }
+            if (queue == null) {
+                queue = (Queue<String>) extras.getSerializable(Globals.FSEARCHES);
+            }
+        } else {
+            queue = new LinkedList<String>();
         }
 
         updateDictionaryButton();
+        loadState();
     }
 
     public void onClick(View v) {
@@ -146,6 +165,11 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     public void lookupResults(List<SearchResult> results) {
         lookup = null;
         dialog.dismiss();
+        if (queue.size() > 9) {
+            queue.remove();
+        }
+        queue.add(query.getText().toString());
+
         Intent intent = new Intent(this, SearchResultListView.class);
         intent.putExtra(Globals.SEARCHWORD, query.getText().toString());
         intent.putExtra(Globals.SEARCHRESULTS,
@@ -278,7 +302,7 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     protected Dialog showAboutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("About Andronary");
-        builder.setMessage("By Roy Sindre Norangshol\nhttp://www.roysindre.no\n\nProject website:\n http://github.com/norrs/Andronary\nLicence:\n http://www.apache.org/licenses/LICENSE-2.0.html");
+        builder.setMessage("By Roy Sindre Norangshol\nhttp://www.roysindre.no\n\nProject website:\n http://github.com/norrs/Andronary\nLicence:\n Apache 2 License\n See http://github.com/norrs/Andronary/blob/master/LICENSE for details.\n\nIcon by Wikimedia user Tael\n licensed under Creative Commons Attribution-Share Alike 3.0 Unported");
         return builder.create();
     }
 
@@ -303,6 +327,10 @@ public class MainActivity extends Activity implements OnClickListener, Directory
     private void loadState() {
         if (lastQuery != null) {
             query.setText(lastQuery);
+        }
+        if (queue != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, queue.toArray(new String[queue.size()]));
+            ((ListView) findViewById(R.id.history)).setAdapter(adapter);
         }
     }
 }

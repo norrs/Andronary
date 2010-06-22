@@ -30,4 +30,5 @@ public class Globals {
     public static final String SPASSWORD = "SERVICEPASSWORD";
     public static final String FSEARCH = "FSEARCH";
     public static final String FDICTIONARIES = "FDICTS";
+    public static final String FSEARCHES = "FSEARCHES";
 }
