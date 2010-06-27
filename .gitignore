@@ -6,3 +6,7 @@ andronary-services/nbproject/private
 andronary-services/*/nbproject/private
 andronary-services/*/target
 andronary-services/*/target/*
+*/target
+*/target/*
+nbproject/private
+*/nbproject/private
