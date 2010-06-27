@@ -67,6 +67,7 @@ public class HttpUtil {
         HttpGet httpGet = new HttpGet(url.toURI());
 
         httpGet.addHeader("Accept", "application/json");
+        httpGet.addHeader("User-Agent", "Andronary/0.1");
         HttpResponse response;
 
         return httpClient.execute(httpGet);
@@ -77,6 +78,7 @@ public class HttpUtil {
         HttpPost httpPost = new HttpPost(uri);
         //httpPost.addHeader("Accept", "application/json");
         httpPost.addHeader("Content-Type", "application/json; charset=utf-8");
+        httpPost.addHeader("User-Agent", "Andronary/0.1");
         httpPost.addHeader("Connection", "close");
         StringEntity e = new StringEntity(data.get(0).getValue(), HTTP.UTF_8);
         //httpPost.setEntity(new UrlEncodedFormEntity(data));
@@ -98,6 +100,7 @@ public class HttpUtil {
         HttpPut httpPost = new HttpPut(uri);
         //httpPost.addHeader("Accept", "application/json");
         httpPost.addHeader("Content-Type", "application/json; charset=utf-8");
+        httpPost.addHeader("User-Agent", "Andronary/0.1");
         httpPost.addHeader("Connection", "close");
         StringEntity e = new StringEntity(data.get(0).getValue(), HTTP.UTF_8);
         //httpPost.setEntity(new UrlEncodedFormEntity(data));
@@ -116,6 +119,7 @@ public class HttpUtil {
         HttpDelete httpDelete = new HttpDelete(uri);
         //httpPost.addHeader("Accept", "application/json");
         httpDelete.addHeader("Content-Type", "application/json; charset=utf-8");
+        httpDelete.addHeader("User-Agent", "Andronary/0.1");
         httpDelete.addHeader("Connection", "close");
         return httpClient.execute(httpDelete);
 
