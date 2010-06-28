@@ -5,8 +5,8 @@
   <artifactId>AndronaryPlatform</artifactId>
   <packaging>pom</packaging>
   <version>0.1-SNAPSHOT</version>
-  <name>AndronaryPlatform</name>
-  <url>http://maven.apache.org</url>
+  <name>Andronary</name>
+  <url>http://github.com/norrs/Andronary</url>
     <build>
         <plugins>
             <plugin>
@@ -21,9 +21,9 @@
         </plugins>
     </build>
   <modules>
-      <module>andronary-android</module>
+      <module>andronary-api</module>
       <module>andronary-services</module>
-    <module>andronary-api</module>
+      <module>andronary-android</module>
   </modules>
   <dependencies>
     <dependency>

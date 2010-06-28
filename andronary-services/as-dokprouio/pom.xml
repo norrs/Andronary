@@ -10,7 +10,7 @@
     <artifactId>as-dokprouio</artifactId>
     <packaging>war</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>AndronaryService :: DokproUio</name>
+    <name>Andronary :: Services :: DokproUio</name>
     <url>http://maven.apache.org</url>
     <build>
         <plugins>
