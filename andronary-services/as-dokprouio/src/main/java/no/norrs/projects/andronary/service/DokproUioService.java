@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import no.norrs.projects.andronary.service.utils.HttpUtil;
-import no.norrs.projects.andronary.service.utils.iAndronaryService;
+import no.norrs.projects.andronary.service.utils.AndronaryService;
 import org.apache.http.HttpResponse;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
@@ -39,7 +39,7 @@ import org.htmlparser.util.ParserException;
  *
  * @author Roy Sindre Norangshol <roy.sindre@norangshol.no>
  */
-public class DokproUioService implements iAndronaryService {
+public class DokproUioService implements AndronaryService {
 
     public enum Dicts implements no.norrs.projects.andronary.service.utils.Dictionary {
 

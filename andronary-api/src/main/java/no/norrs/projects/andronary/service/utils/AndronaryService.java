@@ -23,7 +23,7 @@ import java.util.List;
  * 
  * @author Roy Sindre Norangshol <roy.sindre@norangshol.no>
  */
-public interface iAndronaryService {
+public interface AndronaryService {
 
     no.norrs.projects.andronary.service.utils.Dictionary[] getDictionaries();
 
