@@ -53,7 +53,7 @@ public class DictLookupTask extends AsyncTask<String, Void, List<SearchResult>> 
                 creds = new UsernamePasswordCredentials(lookup[1], lookup[2]);
             }
             DictonaryParser dp = new DictonaryParser();
-            return (List<SearchResult>) dp.lookup(Uri.parse(String.format("%s/lookup?word=%s&dict=%s", lookup[0], lookup[3], lookup[4])), creds);
+            return (List<SearchResult>) dp.lookup(Uri.parse(String.format("%s/lookup?word=%s&dict=%s", lookup[0], lookup[3].trim(), lookup[4])), creds);
         } catch (IOException ex) {
             Logger.getLogger(DictLookupTask.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {

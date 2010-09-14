@@ -47,7 +47,7 @@
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <sign>
-                        <debug>false</debug>
+                        <debug>true</debug>
                     </sign>
                 </configuration>
                 <extensions>true</extensions>

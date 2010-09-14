@@ -49,7 +49,7 @@ public class DictListTask extends AsyncTask<String, Void, String[]> {
             }
 
             UsernamePasswordCredentials creds = null;
-            if (lookup[1] != null && lookup[2] != null && lookup[1].equalsIgnoreCase("") && lookup[2].equalsIgnoreCase("")) {
+            if (lookup[1] != null && lookup[2] != null && !lookup[1].equalsIgnoreCase("") && !lookup[2].equalsIgnoreCase("")) {
                 creds = new UsernamePasswordCredentials(lookup[1], lookup[2]);
             }
             DictonaryParser dp = new DictonaryParser();

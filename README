@@ -1,5 +1,14 @@
 Andronary - Dictionary application for your Android!
 
+- Quickstart:
+
+-- Andronary APK:
+
+Starting emulator   : mvn android:emulator-start -Dandroid.emulator.avd=<name avd> -Dandroid.emulator.wait=10000
+Stopping emulator   : mvn android:emulator-stop
+Starting application: mvn android:deploy
+
+
 --
 Roy Sindre Norangshol
 roy.sindre <alpha> norangshol.no
